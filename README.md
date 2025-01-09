@@ -1,4 +1,4 @@
-# YouTube Channel Tracker
+# Agents Utility
 
 A production-ready service that tracks the latest videos from specified YouTube channels without using the YouTube API. The service stores the latest video for each channel and maintains a history of replaced videos.
 
