@@ -6,6 +6,8 @@ A production-ready service that tracks the latest videos from specified YouTube 
 
 - Track multiple YouTube channels via channel IDs
 - Store latest video details (title, URL, thumbnail, description)
+- Fetch and store related web content for each video
+- Automatically search and store first 5 URLs with context
 - Keep history of replaced videos
 - Configurable check intervals
 - Comprehensive logging system
@@ -43,6 +45,11 @@ A production-ready service that tracks the latest videos from specified YouTube 
 - url: Video URL
 - thumbnail: Thumbnail URL
 - description: First 100 words of video description
+- web_search_results: JSON array of related web content
+  - url: Related webpage URL
+  - title: Page title
+  - snippet: Search result snippet
+  - context: First 1000 characters of page content
 - updated_at: Last update timestamp
 
 ### processed_videos
@@ -53,6 +60,7 @@ A production-ready service that tracks the latest videos from specified YouTube 
 - url: Video URL
 - thumbnail: Thumbnail URL
 - description: Video description
+- web_search_results: JSON array of related web content (same structure as above)
 - processed_at: Processing timestamp
 - action: Type of processing ('replaced')
 
@@ -114,6 +122,66 @@ pip install -r requirements.txt
 ```bash
 python -m youtube_tracker
 ```
+
+## Testing
+
+The project includes comprehensive tests for all components, including the web search functionality.
+
+### Running Tests
+
+Run all tests with coverage report:
+```bash
+pytest --cov=src/youtube_tracker tests/
+```
+
+Run specific test file:
+```bash
+pytest tests/test_web_search.py -v
+```
+
+### Test Structure
+
+- `tests/conftest.py`: PyTest configuration and fixtures
+- `tests/test_web_search.py`: Tests for web search functionality
+  - Search result validation
+  - Error handling
+  - Page content extraction
+  - Response structure verification
+
+### Test Coverage
+
+Tests cover:
+- Successful web searches
+- Empty search results
+- Request error handling
+- Page content extraction
+- Result structure validation
+- HTML parsing and cleaning
+
+### Manual Testing Script
+
+A script is provided to test the web search functionality with custom parameters:
+
+```bash
+# Basic usage
+python scripts/test_web_search.py --query "your search query"
+
+# Specify number of results
+python scripts/test_web_search.py --query "python programming" --results 3
+
+# Custom log file
+python scripts/test_web_search.py --query "test query" --log-file custom_log.log
+
+# Save results to JSON
+python scripts/test_web_search.py --query "test query" --output results.json
+```
+
+The script provides:
+- Detailed logging of search results
+- Formatted output for easy reading
+- Option to save results as JSON
+- Automatic log file creation with timestamps
+- Error handling and reporting
 
 ## Contributing
 

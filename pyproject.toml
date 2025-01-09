@@ -6,5 +6,6 @@ readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
     "beautifulsoup4>=4.12.3",
+    "googlesearch-python>=1.2.5",
     "requests>=2.32.3",
 ]

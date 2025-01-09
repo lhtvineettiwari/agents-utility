@@ -1,0 +1,6 @@
+1. Monitor the Videos for the given channel IDs
+2. Store the video details in a database
+3. Search for the given keyword in the video title and description and fetch the results
+4. TODO: Need to implement the summarize the google Search results 
+5. TODO: Send the content to LLM model to generate the summary (according to new structure)
+6. TODO: Store the summary in the database

@@ -7,12 +7,14 @@ version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
     { name = "beautifulsoup4" },
+    { name = "googlesearch-python" },
     { name = "requests" },
 ]
 
 [package.metadata]
 requires-dist = [
     { name = "beautifulsoup4", specifier = ">=4.12.3" },
+    { name = "googlesearch-python", specifier = ">=1.2.5" },
     { name = "requests", specifier = ">=2.32.3" },
 ]
 
@@ -96,6 +98,19 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/cd/e5/131d2fb1b0dddafc37be4f3a2fa79aa4c037368be9423061dccadfd90091/charset_normalizer-3.4.1-cp313-cp313-win32.whl", hash = "sha256:eb8178fe3dba6450a3e024e95ac49ed3400e506fd4e9e5c32d30adda88cbd407", size = 95391 },
     { url = "https://files.pythonhosted.org/packages/27/f2/4f9a69cc7712b9b5ad8fdb87039fd89abba997ad5cbe690d1835d40405b0/charset_normalizer-3.4.1-cp313-cp313-win_amd64.whl", hash = "sha256:b1ac5992a838106edb89654e0aebfc24f5848ae2547d22c2c3f66454daa11971", size = 102702 },
     { url = "https://files.pythonhosted.org/packages/0e/f6/65ecc6878a89bb1c23a086ea335ad4bf21a588990c3f535a227b9eea9108/charset_normalizer-3.4.1-py3-none-any.whl", hash = "sha256:d98b1668f06378c6dbefec3b92299716b931cd4e6061f3c875a71ced1780ab85", size = 49767 },
+]
+
+[[package]]
+name = "googlesearch-python"
+version = "1.2.5"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "beautifulsoup4" },
+    { name = "requests" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/d4/69/b285059d1e3ab119eb9fd072aa3fd9da8da8867296e3cee4349bd74c2d63/googlesearch_python-1.2.5.tar.gz", hash = "sha256:3c23488374f477fb36e8e2975abc5e4e18794d898d8a2c9c9bf21a1440213e87", size = 4510 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/2e/5c/387b879de452c6c4b5400a52f1c0216aca3aa5740acfd93346f543a20133/googlesearch_python-1.2.5-py3-none-any.whl", hash = "sha256:28ef8ad737951b96ebe8963fbeb9bd2b45cae5c2533df1cc7cb8e72129a785f9", size = 4845 },
 ]
 
 [[package]]

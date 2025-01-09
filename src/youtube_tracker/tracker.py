@@ -4,12 +4,13 @@ import schedule
 import logging
 from dotenv import load_dotenv
 from datetime import datetime
-from sqlalchemy import create_engine, Column, String, DateTime, Integer
+from sqlalchemy import create_engine, Column, String, DateTime, Integer, JSON
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 import requests
 from bs4 import BeautifulSoup
 import re
+from .web_search import WebSearcher
 
 # Configure logging
 log_level = os.getenv('LOG_LEVEL', 'INFO')
@@ -59,6 +60,7 @@ class LatestVideo(Base):
     url = Column(String, nullable=False)
     thumbnail = Column(String, nullable=False)
     description = Column(String)
+    web_search_results = Column(JSON, nullable=True)
     updated_at = Column(DateTime, default=datetime.utcnow)
 
 class ProcessedVideo(Base):
@@ -71,11 +73,37 @@ class ProcessedVideo(Base):
     url = Column(String, nullable=False)
     thumbnail = Column(String, nullable=False)
     description = Column(String)
+    web_search_results = Column(JSON, nullable=True)
     processed_at = Column(DateTime, default=datetime.utcnow)
     action = Column(String, nullable=False)  # 'replaced' or 'removed'
 
 # Create tables
 Base.metadata.create_all(bind=engine)
+
+# Initialize web searcher
+web_searcher = WebSearcher()
+
+def perform_web_search(title, description):
+    """
+    Perform web search based on video title and description.
+    """
+    try:
+        # Combine title and first few words of description for search
+        desc_words = description.split()[:20] if description else []
+        search_query = f"{title} {' '.join(desc_words)}"
+        
+        logger.info(f"Performing web search for: {search_query[:100]}...")
+        results = web_searcher.search(search_query)
+        
+        if results:
+            logger.info(f"Found {len(results)} web search results")
+        else:
+            logger.warning("No web search results found")
+            
+        return results
+    except Exception as e:
+        logger.error(f"Error performing web search: {str(e)}")
+        return []
 
 def get_latest_video(channel_id):
     """
@@ -146,6 +174,9 @@ def get_latest_video(channel_id):
                         description += "..."
                     break
         
+        # Perform web search for context
+        web_search_results = perform_web_search(title, description)
+        
         logger.debug(f"Successfully fetched video data for channel {channel_id}")
         return {
             "channel_id": channel_id,
@@ -153,7 +184,8 @@ def get_latest_video(channel_id):
             "title": title,
             "url": video_url,
             "thumbnail": thumbnail_url,
-            "description": description
+            "description": description,
+            "web_search_results": web_search_results
         }
         
     except Exception as e:
@@ -203,6 +235,7 @@ def update_latest_videos():
                             url=existing_video.url,
                             thumbnail=existing_video.thumbnail,
                             description=existing_video.description,
+                            web_search_results=existing_video.web_search_results,
                             action='replaced'
                         )
                         db.add(processed_video)

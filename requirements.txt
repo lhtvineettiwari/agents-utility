@@ -1,6 +1,12 @@
+# Core dependencies
 requests==2.31.0
 beautifulsoup4==4.12.2
+googlesearch-python==1.2.3
 python-dotenv==1.0.0
 sqlalchemy==2.0.23
 psycopg2-binary==2.9.9
 schedule==1.2.1
+
+# Testing dependencies
+pytest==7.4.3
+pytest-cov==4.1.0
